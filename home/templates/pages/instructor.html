@@ -1,0 +1,30 @@
+{% extends "pages/base.html" %}
+<!-- Title of learner-->
+{% block  title %} Instructor {% endblock %}
+<!-- Body of learner app-->
+{% block content %}
+    <h1>INSTRUCTOR</h1>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4">
+                <form action="/viewLearner/" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" style="height:50px;width:200px">View</button>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form action="/updateLearner/" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" style="height:50px;width:200px">Register</button>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form action="/removeLearner/" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" style="height:50px;width:200px">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

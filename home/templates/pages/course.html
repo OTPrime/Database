@@ -1,0 +1,18 @@
+{% extends "pages/base.html" %}
+<!-- Title of learner-->
+{% block  title %} Course {% endblock %}
+<!-- Body of learner app-->
+{% block content %}
+    <h1>COURSE</h1>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4">
+                <form action="/viewLearner/" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" style="height:50px;width:200px">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

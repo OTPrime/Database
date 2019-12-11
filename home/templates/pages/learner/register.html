@@ -1,0 +1,14 @@
+{% extends "pages/base.html" %}
+<!-- Title of learner-->
+{% block  title %} Regestration {% endblock %}
+{% block content %}
+    <h1>LEARNER: REGISTER</h1>
+    <br>
+    <div class="container">
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Register"/>
+        </form>
+    </div>
+{% endblock %}

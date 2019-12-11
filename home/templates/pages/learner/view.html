@@ -1,0 +1,36 @@
+{% extends "pages/base.html" %}
+<!-- Title of learner-->
+{% block  title %} Learner {% endblock %}
+<!-- Body of learner app-->
+{% block content %}
+    <h1>LEARNER: VIEW</h1>
+    <br>
+    <div class="container">
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Get Information"/>
+        </form>
+    </div>
+    <br>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Your ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">Sex</th>
+            <th scope="col">Birth_day</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for infor in infors %}
+              <tr>
+                  {% for key,value in infor.items %}
+                    <td>{{value}}</td>
+                  {% endfor %}
+              </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
