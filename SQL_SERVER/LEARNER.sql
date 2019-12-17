@@ -176,7 +176,7 @@ GO
 
 
 --GET A NUMBER OF LEARNERS HAVE MOST PROGRESS
-CREATE FUNCTION FC_Get_Best_Learner(@number INT)
+ALTER FUNCTION FC_Get_Best_Learner(@number INT)
 RETURNS @result TABLE(
     Learner_ID CHAR(10),
     Name NVARCHAR(40),
@@ -210,7 +210,7 @@ BEGIN
             VALUES(@learner_ID, @name, @title, @enroll_date, @progress)
             SET @count = @count + 1
         END
-        IF @count = @number - 1
+        IF @count = @number
         BEGIN
             CLOSE Ln_Cursor
             RETURN
