@@ -1,26 +1,26 @@
 {% extends "pages/base.html" %}
 <!-- Title of learner-->
-{% block  title %} Learner view {% endblock %}
+{% block  title %} Search course {% endblock %}
 <!-- Body of learner app-->
 {% block content %}
-    <h1>LEARNER: VIEW</h1>
+    <h1>COURSE: SEARCH</h1>
     <br>
     <div class="container">
         <form action="." method="POST">
             {% csrf_token %}
             {{form.as_p}}
-            <input type="submit" value="Get Information"/>
+            <input type="submit" value="Search"/>
         </form>
     </div>
     <br>
     <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">Your ID</th>
-            <th scope="col">Username</th>
-            <th scope="col">Name</th>
-            <th scope="col">Sex</th>
-            <th scope="col">Birth_day</th>
+            <th scope="col">Course_ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Time_to_finish</th>
+            <th scope="col">Cost</th>
           </tr>
         </thead>
         <tbody>

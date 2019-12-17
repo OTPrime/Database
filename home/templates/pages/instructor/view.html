@@ -1,9 +1,9 @@
 {% extends "pages/base.html" %}
 <!-- Title of learner-->
-{% block  title %} Learner view {% endblock %}
+{% block  title %} Instructor view {% endblock %}
 <!-- Body of learner app-->
 {% block content %}
-    <h1>LEARNER: VIEW</h1>
+    <h1>INSTRUCTOR: VIEW</h1>
     <br>
     <div class="container">
         <form action="." method="POST">
@@ -20,7 +20,10 @@
             <th scope="col">Username</th>
             <th scope="col">Name</th>
             <th scope="col">Sex</th>
-            <th scope="col">Birth_day</th>
+            <th scope="col">Birth day</th>
+            <th scope="col">Bio</th>
+            <th scope="col">Field</th>
+            <th scope="col">Email</th>
           </tr>
         </thead>
         <tbody>

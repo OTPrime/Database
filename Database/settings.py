@@ -78,7 +78,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
         'HOST': 'DESKTOP-D3LBU0C\\SERVER1',
-        'NAME': 'course',
+        'NAME': 'COURSE',
         'USER': 'nam',
         'PASSWORD': '01649695400zZ',
     }
