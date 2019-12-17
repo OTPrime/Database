@@ -71,58 +71,96 @@ BEGIN
 END
 GO
 
+USE COURSE
+GO
 ---------------------------------------------------TRIGGER DELETE ENROLL------------------------------------------------
 CREATE TRIGGER TR_DeleteEnroll ON Enroll
 INSTEAD OF DELETE
 AS
 BEGIN
     -- SELECT * FROM DELETED
-    DECLARE @learner_ID CHAR(10)
-    DECLARE @state BIT
-    DECLARE @count INT
-    SELECT @count = COUNT(*) FROM DELETED
-    SELECT @learner_ID = d.Learner_ID, @state = d.State FROM DELETED d
-    -- IF learner account still exists
-    IF  @state = 1 AND @count = 1
+    DECLARE @active_ID INT
+    -- IDENTIFY THE CASE
+    SELECT @active_ID = d.Active_ID FROM DELETED AS d GROUP BY d.Active_ID
+    
+    -- DELETE ALL ENROLL
+    IF (SELECT COUNT(*) FROM DELETED) = (SELECT COUNT(*) FROM Enroll)
     BEGIN
-        PRINT 'CD'    
-        UPDATE Enroll
-        SET State = 0
-        WHERE Learner_ID = @learner_ID AND Course_ID IN (SELECT d.Course_ID FROM DELETED d)
-        PRINT 'LEARNER DISABLE COURSE'
+        DELETE FROM Enroll
+        UPDATE Course SET Number_Learner = 0
     END
-    ELSE
+    -- DELETE ON ENROLL
+    ELSE IF @active_ID = 0
     BEGIN
+        DECLARE @learner_ID_0 CHAR(10)
         DECLARE @course_ID CHAR(10)
-        DECLARE @count_c INT
+        
         -- DECLARE CURSOR
-        DECLARE En_Cursor CURSOR LOCAL FOR
-        SELECT Course_ID, COUNT(*)
-        FROM DELETED
-        GROUP BY Course_ID
+        DECLARE En_Cursor CURSOR LOCAL FOR SELECT Learner_ID, Course_ID FROM DELETED
         -- OPEN CURSOR
         OPEN En_Cursor
-        FETCH NEXT FROM En_Cursor INTO @course_ID, @count_c
+        FETCH NEXT FROM En_Cursor INTO @learner_ID_0, @course_ID
         WHILE @@FETCH_STATUS = 0
         BEGIN
-            UPDATE Course
-            SET [Number_Learner] = [Number_Learner] - @count_c
-            WHERE Course_ID = @course_ID
-            FETCH NEXT FROM En_Cursor INTO @course_ID, @count_c
+            UPDATE Enroll SET State = 0 WHERE Learner_ID = @learner_ID_0 AND Course_ID = @course_ID
+            FETCH NEXT FROM En_Cursor INTO @learner_ID_0, @course_ID
+        END
+        -- CLOSE CURSOR
+        CLOSE En_Cursor
+        PRINT 'DISABLED ON ENROLL'
+    END
+    
+    -- DELETE ON LEARNER
+    ELSE IF @active_ID = 1
+    BEGIN
+        DECLARE @learner_ID_1 CHAR(10)
+        DECLARE @course_ID_1 CHAR(10)
+        DECLARE @count INT
+        -- DECLARE CURSOR
+        DECLARE En_Cursor CURSOR LOCAL FOR SELECT Course_ID, COUNT(*) FROM DELETED GROUP BY Course_ID
+        -- OPEN CURSOR
+        OPEN En_Cursor
+        FETCH NEXT FROM En_Cursor INTO @course_ID_1, @count
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            UPDATE Course   SET [Number_Learner] = [Number_Learner] - @count    WHERE Course_ID = @course_ID_1
+            FETCH NEXT FROM En_Cursor INTO @course_ID_1, @count
         END
         -- CLOSE CURSOR
         CLOSE En_Cursor
         -- DELETE ENROLL
-        IF @count = (SELECT COUNT(*) FROM Enroll)
-        BEGIN 
-            DELETE FROM Enroll
-        END
-        ELSE
-        BEGIN
-            DELETE FROM Enroll 
-            WHERE Learner_ID = @learner_ID AND Course_ID IN (SELECT d.Course_ID FROM DELETED d)
-        END
-        PRINT 'DELETED LEARNER IN ENROLL!'
+        SELECT @learner_ID_1 = d.Learner_ID FROM DELETED AS d GROUP BY d.Learner_ID
+        DELETE FROM Enroll WHERE Learner_ID = @learner_ID_1
+        PRINT 'DELETED LEARNER ON ENROLL!'
     END
+    -- DELETE ON COURSE
+    ELSE IF @active_ID = 2
+    BEGIN
+        DECLARE @course_ID_2 CHAR(10)
+        SELECT @course_ID_2 = Course_ID FROM DELETED GROUP BY Course_ID
+        DELETE FROM Enroll WHERE Course_ID = @course_ID_2
+        PRINT 'DELETED COURSE ON ENROLL!'
+    END
+    -- DELETE ON COURSE
 END
 GO
+
+--------------------------------------TRIGGER COURSE------------------------------------------
+CREATE TRIGGER TR_DeleteCourse ON Course
+INSTEAD OF DELETE
+AS 
+BEGIN
+    DECLARE @Course_ID CHAR(10)
+    SELECT @Course_ID = d.Course_ID FROM DELETED d
+    -- DELETE INFO OF ENROLLED COURSE
+    IF EXISTS(SELECT * FROM Enroll WHERE Course_ID = @Course_ID)
+    BEGIN
+        UPDATE Enroll SET Active_ID = 2 WHERE Course_ID = @Course_ID
+        DELETE FROM Enroll WHERE Course_ID = @Course_ID
+    END
+    -- DELETE COURSE
+    DELETE FROM Course WHERE Course_ID = @Course_ID
+    PRINT 'DELETED ON COURSE'
+END
+GO
+

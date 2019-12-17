@@ -65,12 +65,11 @@ BEGIN
     IF EXISTS(SELECT * FROM Enroll WHERE Learner_ID = @learner_ID)
     BEGIN
         UPDATE Enroll
-        SET State = 0
+        SET Active_ID = 1
         WHERE Learner_ID = @learner_ID
 
         DELETE FROM Enroll
         WHERE Learner_ID = @learner_ID
-        PRINT 'DELETED ON ENROLL'
     END
     -- DELETE LEARNER
     DELETE FROM Learner

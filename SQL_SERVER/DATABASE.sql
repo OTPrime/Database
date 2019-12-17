@@ -82,6 +82,7 @@ CREATE TABLE Enroll
     Enroll_date DATE DEFAULT GETDATE(),
     State BIT DEFAULT 1, 
     Progress INT DEFAULT 0,-- complete: %(progress of learner)
+    Active_ID INT DEFAULT 0,
     CONSTRAINT PK_Enroll PRIMARY KEY (Learner_ID, Course_ID),
     CONSTRAINT CH_State CHECK (Progress >= 0 AND Progress <= 100) -- the progress of the learner
 )
