@@ -1,4 +1,4 @@
-USE COURSE1
+USE COURSE
 GO
 
 ----------------------------------------------------EXERCISE 1--------------------------------------------------
@@ -71,6 +71,8 @@ BEGIN
 END
 GO
 
+USE COURSE
+GO
 ---------------------------------------------------TRIGGER DELETE ENROLL------------------------------------------------
 CREATE TRIGGER TR_DeleteEnroll ON Enroll
 INSTEAD OF DELETE

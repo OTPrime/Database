@@ -1,4 +1,4 @@
-USE COURSE1
+USE COURSE
 GO
 
 -----------------------------------------------EXERCISE 1-----------------------------------------------
@@ -67,7 +67,6 @@ BEGIN
         UPDATE Enroll
         SET Active_ID = 1
         WHERE Learner_ID IN (SELECT d.Learner_ID FROM DELETED AS d)
-        PRINT 'ACTION_ID = 1'
 
         DELETE FROM Enroll
         WHERE Learner_ID IN (SELECT d.Learner_ID FROM DELETED AS d)
@@ -78,6 +77,7 @@ BEGIN
     PRINT 'DELETED ON LEARNER'
 END
 GO
+
 
 ------------------------------------------- TRIGGER TRACK ACTION LEARNER-------------------------------------------
 CREATE TRIGGER TR_TrackActionLearner
@@ -106,8 +106,6 @@ BEGIN
         -- INSERT
         INSERT INTO Learner_Audit(Learner_ID, Learner_Name, Change_date, Action)
         VALUES(@learner_ID, @learner_name, GETDATE(), @action)
-        
-        PRINT 'UPDATED ON LEARNER_AUDIT TABLE!' 
     END
 END
 GO

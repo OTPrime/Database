@@ -61,9 +61,9 @@ def viewInstructor(request):
         name = form.cleaned_data['name']
         cursor = connection.cursor()
         if name == '-1':
-            cursor.execute("SELECT Instructor_ID, Username, Name, Sex, Birth_day, Bio, Field, Email FROM Instructor")
+            cursor.execute("SELECT Instructor_ID, Username, Name, Sex, Birth_day, Field, Email FROM Instructor WHERE Sex='male'")
         else:
-            cursor.execute("SELECT  Instructor_ID, Username, Name, Sex, Birth_day, Bio, Field, Email FROM Instructor WHERE Name = '{}'".format(name))
+            cursor.execute("SELECT  Instructor_ID, Username, Name, Sex, Birth_day, Field, Email FROM Instructor WHERE Name = N'{}'".format(name))
         infors = dictfetchall(cursor)
         data = {}
         data['form'] = form

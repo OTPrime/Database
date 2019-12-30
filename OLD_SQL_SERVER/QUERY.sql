@@ -1,0 +1,22 @@
+USE COURSE
+GO
+
+SELECT * FROM Learner
+
+SELECT * FROM Course
+GO
+
+DELETE FROM Instructor
+WHERE Instructor_ID = '07'
+GO
+
+DELETE FROM Course
+WHERE Course_ID = '0002'
+GO
+
+DELETE FROM Learner
+WHERE Learner_ID = '1712245'
+GO
+
+DELETE FROM Course
+GO

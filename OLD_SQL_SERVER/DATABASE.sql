@@ -1,7 +1,7 @@
-CREATE DATABASE COURSE1
+CREATE DATABASE COURSE
 GO
 
-USE COURSE1
+USE COURSE
 GO
 
 -------------------------------------LEARNER-----------------------------------------------
